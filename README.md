@@ -1,49 +1,177 @@
-# ⚒️ Herreros de Hábitos – Backend en Move
+# Herreros de Hábitos 🛠️
 
-**Herreros de Hábitos** es un contrato inteligente escrito en **Move** para la blockchain de **Sui**, cuyo propósito es gestionar y dar seguimiento a hábitos de manera descentralizada.  
+Un smart contract simple para el seguimiento de hábitos construido en el lenguaje Move para la blockchain Sui.
 
-La idea es simple: así como un herrero forja el hierro con golpes constantes, este contrato permite forjar hábitos mediante el registro y seguimiento en la cadena de bloques.
+## 📖 Descripción
 
----
+"Herreros de Hábitos" es un contrato inteligente que permite a los usuarios crear y gestionar un tracker personal de hábitos. El proyecto demuestra conceptos fundamentales de Move como estructuras de datos, ownership, y testing.
 
-## 📌 Estructura del contrato
-Archivo principal: `sources/herreros_de_habitos.move`
+## 🚀 Características
 
+- **Creación de tracker**: Crea un nuevo objeto de seguimiento de hábitos
+- **Agregar hábitos**: Añade nuevos hábitos como strings UTF-8
+- **Consultar cantidad**: Obtén el número total de hábitos registrados
+- **Destrucción segura**: Limpia recursos apropiadamente
+
+## 🏗️ Estructura del Proyecto
+
+```
+herreros_de_habitos/
+├── Move.toml              # Configuración del proyecto
+├── sources/
+│   └── herreros_de_habitos.move  # Código principal del contrato
+└── README.md
+```
+
+## 📋 Prerrequisitos
+
+- [Sui CLI](https://docs.sui.io/guides/developer/getting-started/sui-install) instalado
+- Conocimientos básicos del lenguaje Move
+
+## 🛠️ Instalación y Uso
+
+### 1. Clonar e instalar dependencias
+
+```bash
+git clone <tu-repositorio>
+cd herreros_de_habitos
+```
+
+### 2. Compilar el proyecto
+
+```bash
+sui move build
+```
+
+### 3. Ejecutar tests
+
+```bash
+sui move test
+```
+
+## 💻 API del Contrato
+
+### Estructuras
+
+#### `Habits`
 ```move
-module herreros_de_habitos::tracker {
-
-    use std::string::String;
-    use std::vector;
-    use sui::object::{Self, UID};
-    use sui::tx_context::{Self, TxContext};
-
-    /// Estructura de hábitos
-    public struct Habits has key, store {
-        id: UID,
-        items: vector<String>,
-    }
-
-    /// Crear un nuevo tracker
-    public fun new(ctx: &mut TxContext): Habits {
-        Habits {
-            id: object::new(ctx),
-            items: vector::empty<String>(),
-        }
-    }
-
-    /// Agregar hábito
-    public fun add(h: &mut Habits, habit: String) {
-        vector::push_back(&mut h.items, habit);
-    }
-
-    /// Número de hábitos
-    public fun length(h: &Habits): u64 {
-        vector::length(&h.items)
-    }
+public struct Habits has key, store {
+    id: object::UID,
+    items: vector<string::String>,
 }
 ```
 
-## Funcionalidades principales
-- <code>new(ctx)</code> → Crea un nuevo tracker de hábitos en la blockchain.
-- <code>add(h, habit)</code> → Agrega un hábito (string) al tracker.
-- <code>length(h)</code> → Devuelve la cantidad de hábitos registrados.
+### Funciones Públicas
+
+#### `new(ctx: &mut tx_context::TxContext): Habits`
+Crea un nuevo tracker de hábitos vacío.
+
+**Parámetros:**
+- `ctx`: Contexto de la transacción
+
+**Retorna:** Una nueva instancia de `Habits`
+
+#### `add(h: &mut Habits, habit: string::String)`
+Agrega un nuevo hábito al tracker.
+
+**Parámetros:**
+- `h`: Referencia mutable al tracker de hábitos
+- `habit`: String UTF-8 describiendo el hábito
+
+#### `length(h: &Habits): u64`
+Obtiene el número total de hábitos en el tracker.
+
+**Parámetros:**
+- `h`: Referencia inmutable al tracker de hábitos
+
+**Retorna:** Número de hábitos como `u64`
+
+#### `destroy(h: Habits)`
+Destruye el tracker de hábitos de forma segura.
+
+**Parámetros:**
+- `h`: Instancia del tracker a destruir
+
+## 🧪 Ejemplos de Uso
+
+### Crear y usar un tracker
+
+```move
+// Crear nuevo tracker
+let mut ctx = tx_context::dummy();
+let mut tracker = new(&mut ctx);
+
+// Agregar hábitos
+add(&mut tracker, string::utf8(b"Leer 30 minutos diarios"));
+add(&mut tracker, string::utf8(b"Ejercicio matutino"));
+add(&mut tracker, string::utf8(b"Meditar 10 minutos"));
+
+// Verificar cantidad
+assert!(length(&tracker) == 3, 0);
+
+// Limpiar recursos
+destroy(tracker);
+```
+
+## 🧪 Testing
+
+El proyecto incluye tests unitarios completos:
+
+- `test_new_tracker()`: Verifica la creación correcta de un tracker vacío
+- `test_add_habits()`: Prueba la funcionalidad de agregar hábitos
+
+Para ejecutar los tests:
+
+```bash
+sui move test
+```
+
+## 🎯 Casos de Uso
+
+- **Aplicaciones de productividad**: Integrar como backend para apps de seguimiento de hábitos
+- **Gamificación**: Base para sistemas de recompensas por completar hábitos
+- **Análisis personal**: Tracking de patrones de comportamiento
+- **Comunidades**: Seguimiento grupal de objetivos
+
+## 🔧 Desarrollo
+
+### Compilar
+```bash
+sui move build
+```
+
+### Ejecutar tests
+```bash
+sui move test
+```
+
+### Verificar sintaxis
+```bash
+sui move check
+```
+
+## 📝 Notas Técnicas
+
+- **Abilities**: El struct `Habits` tiene `key` y `store` pero no `drop` debido a que contiene un `UID`
+- **Ownership**: Se sigue el modelo de ownership de Move para gestión segura de recursos
+- **Testing**: Usa `tx_context::dummy()` para crear contextos de prueba
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit tus cambios (`git commit -am 'Agrega nueva funcionalidad'`)
+4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia Apache. Ver el archivo `LICENSE` para más detalles.
+
+## 🔗 Enlaces Útiles
+
+- [Documentación de Sui](https://docs.sui.io/)
+- [Libro de Move](https://move-language.github.io/move/)
+- [Ejemplos de Sui](https://github.com/MystenLabs/sui/tree/main/examples)
+
+---
