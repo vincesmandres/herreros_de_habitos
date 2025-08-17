@@ -140,11 +140,11 @@ sui move check
 4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
 
-## 📄 Licencia
+##  Licencia
 
-Este proyecto está bajo la licencia Apache. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la licencia Apache. 
 
-## 🔗 Enlaces Útiles
+## Enlaces Útiles
 
 - [Documentación de Sui](https://docs.sui.io/)
 - [Libro de Move](https://move-language.github.io/move/)
