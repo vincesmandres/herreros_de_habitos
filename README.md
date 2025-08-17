@@ -102,14 +102,14 @@ Para ejecutar los tests:
 sui move test
 ```
 
-## 🎯 Casos de Uso
+## Casos de Uso
 
 - **Aplicaciones de productividad**: Integrar como backend para apps de seguimiento de hábitos
 - **Gamificación**: Base para sistemas de recompensas por completar hábitos
 - **Análisis personal**: Tracking de patrones de comportamiento
 - **Comunidades**: Seguimiento grupal de objetivos
 
-## 🔧 Desarrollo
+## Desarrollo
 
 ### Compilar
 ```bash
@@ -126,13 +126,13 @@ sui move test
 sui move check
 ```
 
-## 📝 Notas Técnicas
+## Notas Técnicas
 
 - **Abilities**: El struct `Habits` tiene `key` y `store` pero no `drop` debido a que contiene un `UID`
 - **Ownership**: Se sigue el modelo de ownership de Move para gestión segura de recursos
 - **Testing**: Usa `tx_context::dummy()` para crear contextos de prueba
 
-## 🤝 Contribuir
+## Contribuir
 
 1. Fork el proyecto
 2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
