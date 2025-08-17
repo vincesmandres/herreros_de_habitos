@@ -1,19 +1,19 @@
-# Herreros de Hábitos 🛠️
+# Herreros de Hábitos
 
 Un smart contract simple para el seguimiento de hábitos construido en el lenguaje Move para la blockchain Sui.
 
-## 📖 Descripción
+## Descripción
 
 "Herreros de Hábitos" es un contrato inteligente que permite a los usuarios crear y gestionar un tracker personal de hábitos. El proyecto demuestra conceptos fundamentales de Move como estructuras de datos, ownership, y testing.
 
-## 🚀 Características
+## Características
 
 - **Creación de tracker**: Crea un nuevo objeto de seguimiento de hábitos
 - **Agregar hábitos**: Añade nuevos hábitos como strings UTF-8
 - **Consultar cantidad**: Obtén el número total de hábitos registrados
 - **Destrucción segura**: Limpia recursos apropiadamente
 
-## 🏗️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 herreros_de_habitos/
@@ -23,12 +23,12 @@ herreros_de_habitos/
 └── README.md
 ```
 
-## 📋 Prerrequisitos
+## Prerrequisitos
 
 - [Sui CLI](https://docs.sui.io/guides/developer/getting-started/sui-install) instalado
 - Conocimientos básicos del lenguaje Move
 
-## 🛠️ Instalación y Uso
+## Instalación y Uso
 
 ### 1. Clonar e instalar dependencias
 
@@ -48,8 +48,6 @@ sui move build
 ```bash
 sui move test
 ```
-
-## 💻 API del Contrato
 
 ### Estructuras
 
@@ -91,29 +89,7 @@ Destruye el tracker de hábitos de forma segura.
 
 **Parámetros:**
 - `h`: Instancia del tracker a destruir
-
-## 🧪 Ejemplos de Uso
-
-### Crear y usar un tracker
-
-```move
-// Crear nuevo tracker
-let mut ctx = tx_context::dummy();
-let mut tracker = new(&mut ctx);
-
-// Agregar hábitos
-add(&mut tracker, string::utf8(b"Leer 30 minutos diarios"));
-add(&mut tracker, string::utf8(b"Ejercicio matutino"));
-add(&mut tracker, string::utf8(b"Meditar 10 minutos"));
-
-// Verificar cantidad
-assert!(length(&tracker) == 3, 0);
-
-// Limpiar recursos
-destroy(tracker);
-```
-
-## 🧪 Testing
+## Testing
 
 El proyecto incluye tests unitarios completos:
 
