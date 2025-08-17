@@ -1,46 +1,48 @@
 module herreros_de_habitos::tracker {
+    use std::string;
 
-    use std::string::String;
-
-    /// Estructura de hábitos
+    // Remove 'drop' ability because UID doesn't have drop
     public struct Habits has key, store {
-        id: UID,
-        items: vector<String>,
+        id: object::UID,
+        items: vector<string::String>,
     }
 
-    /// Crear un nuevo tracker
-    public fun new(ctx: &mut TxContext): Habits {
+    public fun new(ctx: &mut tx_context::TxContext): Habits {
         Habits {
             id: object::new(ctx),
-            items: vector::empty<String>(),
+            items: vector::empty<string::String>(),
         }
     }
 
-    /// Agregar hábito
-    public fun add(h: &mut Habits, habit: String) {
+    public fun add(h: &mut Habits, habit: string::String) {
         vector::push_back(&mut h.items, habit);
     }
 
-    /// Número de hábitos
     public fun length(h: &Habits): u64 {
         vector::length(&h.items)
     }
 
-    // -------------------
-    // 🔎 TESTS UNITARIOS
-    // -------------------
-
-    #[test]
-    public fun test_new_tracker(ctx: &mut TxContext) {
-        let tracker = new(ctx);
-        assert!(length(&tracker) == 0, 1);
+    // Consume the Habits object to avoid unused value error
+    public fun destroy(h: Habits) {
+        let Habits { id, items: _ } = h;
+        object::delete(id);
     }
 
     #[test]
-    public fun test_add_habits(ctx: &mut TxContext) {
-        let mut tracker = new(ctx);
-        add(&mut tracker, String::utf8(b"Leer 10 páginas"));
-        add(&mut tracker, String::utf8(b"Ejercicio 30 min"));
-        assert!(length(&tracker) == 2, 2);
+    public fun test_new_tracker() {
+        let mut ctx = tx_context::dummy();
+        let h = new(&mut ctx);
+        assert!(length(&h) == 0, 0);
+        destroy(h); // Consume the object
+    }
+
+    #[test]
+    public fun test_add_habits() {
+        let mut ctx = tx_context::dummy();
+        let mut h = new(&mut ctx);
+        add(&mut h, string::utf8(b"Leer 10 páginas"));
+        add(&mut h, string::utf8(b"Ejercicio 30 min"));
+        assert!(length(&h) == 2, 1);
+        destroy(h); // Consume the object
     }
 }
