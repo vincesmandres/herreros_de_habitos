@@ -1,9 +1,6 @@
 module herreros_de_habitos::tracker {
 
     use std::string::String;
-    use std::vector;
-    use sui::object::{Self, UID};
-    use sui::tx_context::{Self, TxContext};
 
     /// Estructura de hábitos
     public struct Habits has key, store {
@@ -23,6 +20,7 @@ module herreros_de_habitos::tracker {
     public fun add(h: &mut Habits, habit: String) {
         vector::push_back(&mut h.items, habit);
     }
+
 
     /// Número de hábitos
     public fun length(h: &Habits): u64 {
